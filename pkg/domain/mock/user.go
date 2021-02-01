@@ -50,43 +50,16 @@ func (mr *MockUserMockRecorder) Find(id interface{}) *gomock.Call {
 }
 
 // Create mocks base method
-func (m *MockUser) Create(mu model.User) apperror.Error {
+func (m *MockUser) Create(mu model.User) (model.User, apperror.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", mu)
-	ret0, _ := ret[0].(apperror.Error)
-	return ret0
+	ret0, _ := ret[0].(model.User)
+	ret1, _ := ret[1].(apperror.Error)
+	return ret0, ret1
 }
 
 // Create indicates an expected call of Create
 func (mr *MockUserMockRecorder) Create(mu interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUser)(nil).Create), mu)
-}
-
-// Update mocks base method
-func (m *MockUser) Update(mu model.User) apperror.Error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", mu)
-	ret0, _ := ret[0].(apperror.Error)
-	return ret0
-}
-
-// Update indicates an expected call of Update
-func (mr *MockUserMockRecorder) Update(mu interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUser)(nil).Update), mu)
-}
-
-// Delete mocks base method
-func (m *MockUser) Delete(id int64) apperror.Error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", id)
-	ret0, _ := ret[0].(apperror.Error)
-	return ret0
-}
-
-// Delete indicates an expected call of Delete
-func (mr *MockUserMockRecorder) Delete(id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUser)(nil).Delete), id)
 }

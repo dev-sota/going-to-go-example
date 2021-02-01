@@ -58,3 +58,58 @@ func TestUserUsecase_FindUser(t *testing.T) {
 		})
 	}
 }
+
+func TestUserUsecase_AddUser_Success(t *testing.T) {
+	cases := map[string]struct {
+		inp     AddUserInput
+		out     AddUserOutput
+		errCode apperror.Code
+	}{
+		"success": {
+			inp: AddUserInput{
+				User: model.User{
+					Name: "dev-sota",
+					Age:  int(25),
+				},
+			},
+			out: AddUserOutput{
+				User: model.User{
+					ID:   int64(1),
+					Name: "dev-sota",
+					Age:  int(25),
+				},
+			},
+			errCode: apperror.CodeNoError,
+		},
+		"internal error": {
+			inp: AddUserInput{
+				User: model.User{
+					Name: "dev-sota",
+					Age:  int(25),
+				},
+			},
+			out:     AddUserOutput{},
+			errCode: apperror.CodeError,
+		},
+	}
+
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			ctrl := gomock.NewController(t)
+			um := mock.NewMockUser(ctrl)
+
+			aerr := apperror.NewTestError(c.errCode)
+			um.EXPECT().Create(c.inp.User).Return(c.out.User, aerr).AnyTimes()
+
+			u := Usecase{user: um}
+			out, aerr := u.AddUser(c.inp)
+
+			assert.Equal(t, c.out, out)
+			apperror.AssertError(t, c.errCode, aerr)
+
+			ctrl.Finish()
+		})
+	}
+}

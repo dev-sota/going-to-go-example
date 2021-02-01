@@ -4,7 +4,6 @@ import (
 	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
 	"github.com/ispec-inc/going-to-go-example/pkg/infra/entity"
-	"github.com/ispec-inc/going-to-go-example/pkg/transaction"
 	"gorm.io/gorm"
 )
 
@@ -26,19 +25,12 @@ func (repo User) Find(id int64) (model.User, apperror.Error) {
 	return user.ToModel(), nil
 }
 
-func (repo User) Create(mu model.User) apperror.Error {
-	f := func(tx *gorm.DB) apperror.Error {
-		user := entity.NewUserFromModel(mu)
-		if err := tx.Create(&user).Error; err != nil {
-			return newGormError(err, "error inserting user in database")
-		}
-
-		return nil
+func (repo User) Create(mu model.User) (model.User, apperror.Error) {
+	user := entity.NewUserFromModel(mu)
+	if err := repo.db.Create(&user).Error; err != nil {
+		return model.User{}, newGormError(
+			err, "error inserting user in database",
+		)
 	}
-
-	if aerr := transaction.Run(repo.db, f); aerr != nil {
-		return aerr
-	}
-
-	return nil
+	return user.ToModel(), nil
 }

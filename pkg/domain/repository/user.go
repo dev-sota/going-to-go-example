@@ -9,7 +9,7 @@ import (
 
 type User interface {
 	Find(id int64) (model.User, apperror.Error)
-	Create(mu model.User) apperror.Error
+	Create(mu model.User) (model.User, apperror.Error)
 	// Update(mu model.User) apperror.Error
 	// Delete(id int64) apperror.Error
 }
