@@ -1,0 +1,8 @@
+site_name: going-to-go-example
+site_discription: going-to-go-example written by Go
+
+nav:
+  - Overview: index.md
+
+plugins:
+  - techdocs-core
