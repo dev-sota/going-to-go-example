@@ -7,3 +7,7 @@ import (
 type FindUserOutput struct {
 	User model.User
 }
+
+type AddUserOutput struct {
+	User model.User
+}
