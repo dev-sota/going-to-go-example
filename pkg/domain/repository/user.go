@@ -9,6 +9,5 @@ import (
 
 type User interface {
 	Find(id int64) (model.User, apperror.Error)
-	FindByUserID(uid int64) (model.User, apperror.Error)
 	Create(minv model.User) apperror.Error
 }
