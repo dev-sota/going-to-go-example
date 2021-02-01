@@ -48,17 +48,3 @@ func (mr *MockUserMockRecorder) Find(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockUser)(nil).Find), id)
 }
-
-// Create mocks base method
-func (m *MockUser) Create(minv model.User) apperror.Error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", minv)
-	ret0, _ := ret[0].(apperror.Error)
-	return ret0
-}
-
-// Create indicates an expected call of Create
-func (mr *MockUserMockRecorder) Create(minv interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUser)(nil).Create), minv)
-}
