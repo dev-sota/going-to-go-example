@@ -16,7 +16,7 @@ func NewUsecase(repo registry.Repository) Usecase {
 	}
 }
 
-func (u Usecase) FindUser(inp FindUserInput) (out FindUserOutput, aerr apperror.Error) {
+func (u Usecase) Find(inp FindInput) (out FindOutput, aerr apperror.Error) {
 	user, aerr := u.user.Find(inp.ID)
 	if aerr != nil {
 		return
@@ -25,7 +25,7 @@ func (u Usecase) FindUser(inp FindUserInput) (out FindUserOutput, aerr apperror.
 	return out, nil
 }
 
-func (u Usecase) AddUser(inp AddUserInput) (out AddUserOutput, aerr apperror.Error) {
+func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
 	aerr = u.user.Create(&inp.User)
 	if aerr != nil {
 		return

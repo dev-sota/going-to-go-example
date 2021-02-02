@@ -10,17 +10,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserUsecase_FindUser(t *testing.T) {
+func TestUserUsecase_Find(t *testing.T) {
 	cases := map[string]struct {
-		inp     FindUserInput
-		out     FindUserOutput
+		inp     FindInput
+		out     FindOutput
 		errCode apperror.Code
 	}{
 		"success": {
-			inp: FindUserInput{
+			inp: FindInput{
 				ID: int64(1),
 			},
-			out: FindUserOutput{
+			out: FindOutput{
 				User: model.User{
 					ID:   int64(1),
 					Name: "dev-sota",
@@ -30,10 +30,10 @@ func TestUserUsecase_FindUser(t *testing.T) {
 			errCode: apperror.CodeNoError,
 		},
 		"not found": {
-			inp: FindUserInput{
+			inp: FindInput{
 				ID: int64(1),
 			},
-			out:     FindUserOutput{},
+			out:     FindOutput{},
 			errCode: apperror.CodeNotFound,
 		},
 	}
@@ -49,7 +49,7 @@ func TestUserUsecase_FindUser(t *testing.T) {
 			um.EXPECT().Find(c.inp.ID).Return(c.out.User, aerr)
 
 			u := Usecase{user: um}
-			out, aerr := u.FindUser(c.inp)
+			out, aerr := u.Find(c.inp)
 
 			assert.Equal(t, c.out, out)
 			apperror.AssertError(t, c.errCode, aerr)
@@ -59,20 +59,20 @@ func TestUserUsecase_FindUser(t *testing.T) {
 	}
 }
 
-func TestUserUsecase_AddUser_Success(t *testing.T) {
+func TestUserUsecase_Add_Success(t *testing.T) {
 	cases := map[string]struct {
-		inp     AddUserInput
-		out     AddUserOutput
+		inp     AddInput
+		out     AddOutput
 		errCode apperror.Code
 	}{
 		"success": {
-			inp: AddUserInput{
+			inp: AddInput{
 				User: model.User{
 					Name: "dev-sota",
 					Age:  int(25),
 				},
 			},
-			out: AddUserOutput{
+			out: AddOutput{
 				User: model.User{
 					ID:   int64(1),
 					Name: "dev-sota",
@@ -82,13 +82,13 @@ func TestUserUsecase_AddUser_Success(t *testing.T) {
 			errCode: apperror.CodeNoError,
 		},
 		"internal error": {
-			inp: AddUserInput{
+			inp: AddInput{
 				User: model.User{
 					Name: "dev-sota",
 					Age:  int(25),
 				},
 			},
-			out:     AddUserOutput{},
+			out:     AddOutput{},
 			errCode: apperror.CodeError,
 		},
 	}
@@ -101,10 +101,11 @@ func TestUserUsecase_AddUser_Success(t *testing.T) {
 			um := mock.NewMockUser(ctrl)
 
 			aerr := apperror.NewTestError(c.errCode)
-			um.EXPECT().Create(c.inp.User).Return(c.out.User, aerr).AnyTimes()
+			um.EXPECT().Create(&(c.inp.User)).Return(aerr)
+			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr).AnyTimes()
 
 			u := Usecase{user: um}
-			out, aerr := u.AddUser(c.inp)
+			out, aerr := u.Add(c.inp)
 
 			assert.Equal(t, c.out, out)
 			apperror.AssertError(t, c.errCode, aerr)

@@ -8,7 +8,7 @@ import (
 
 func NewRouter(handler handler) http.Handler {
 	r := chi.NewRouter()
-	r.Get("/{id}", handler.GetUser)
-	r.Post("/", handler.AddUser)
+	r.Get("/{id}", handler.Get)
+	r.Post("/", handler.Add)
 	return r
 }

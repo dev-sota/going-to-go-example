@@ -4,10 +4,10 @@ import (
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
 )
 
-type FindUserOutput struct {
+type FindOutput struct {
 	User model.User
 }
 
-type AddUserOutput struct {
+type AddOutput struct {
 	User model.User
 }
