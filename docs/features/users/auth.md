@@ -12,15 +12,19 @@
 
 # Module
 
-**`cmd/api/server/middleware/auth.go`**
+**`JwtAuthenticator` (`cmd/api/server/middleware/auth.go`)**
 
-- ヘッダにあるトークンを取得してコンテキストに追加する
+- Authorizationヘッダーからトークンを取得する
 - 取得したトークンを"github.com/go-chi/jwtauth" を用いて検証
+
+**`Verify` (`src/user/usecase.go`)**
 - トークン情報(user_id)からユーザー検証する
 
 # Dataflow
 
-- ヘッダにあるトークンを取得してコンテキストに追加する
-- トークンからユーザー検証して認可する
+- ヘッダーからトークンを取得してコンテキストに追加する
+- `JwtAuthenticator`を用いてトークンを検証する
+- `JwtAuthenticator`から`Verify`を呼び出して、トークン情報(user_id)からユーザー検証する
 
 see also [middleware](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
+see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
