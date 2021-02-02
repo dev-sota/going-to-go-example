@@ -15,9 +15,6 @@
 **`cmd/api/server/middleware/auth.go`**
 
 - ヘッダにあるトークンを取得してコンテキストに追加する
-
-**`src/user/usecase.go`**
-
 - 取得したトークンをデコード
 - デコードしたトークン情報からユーザー検証する
 
@@ -26,4 +23,4 @@
 - ヘッダにあるトークンを取得してコンテキストに追加する
 - トークンからユーザー検証して認可する
 
-see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
+see also [middleware](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
