@@ -15,17 +15,18 @@
 **`FindByEmail` (`pkg/domain/repository/user.go`)**
 - `docs/features/users/create.md`で作成。
 
-**`password_decoder` (`src/user/usecase.go`)**
-
+**`password.Authorize` (`pkg/password/pasword.go`)**
 - リクエストされたパスワードをbcryptを用いて復号化する。
-- ビジネスロジックであり、データアクセスを必要としないため、Usecaseに実装。
-- Usecase外部から呼び出されることはないため、privateな関数として実装し、Addメソッドから呼び出す。
+- `password.Encrypt`同様。
+
+**`value.NewToken(user_id)` (`pkg/value/token.go`)**
+- `github.com/go-chi/jwtauth`を使用し、ユーザーIDからトークンを作成する。
 
 # Dataflow
 
 - リクエストされたEメールアドレスから登録されているユーザーを探す。
-- 登録されているパスワードを`password_decoder`に渡し、復号化。
+- 登録されているパスワードを`password.Authorize`に渡し、復号化。
 - リクエストされたパスワードと一致しているか確認。
-- `github.com/go-chi/jwtauth`を使用し、JWTを発行して、レスポンスとして返す。
+- JWTを発行して、レスポンスとして返す。
 
 see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
