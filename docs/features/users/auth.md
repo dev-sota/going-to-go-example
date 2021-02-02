@@ -15,8 +15,8 @@
 **`cmd/api/server/middleware/auth.go`**
 
 - ヘッダにあるトークンを取得してコンテキストに追加する
-- 取得したトークンをデコード
-- デコードしたトークン情報からユーザー検証する
+- 取得したトークンを"github.com/go-chi/jwtauth" を用いて検証
+- トークン情報(user_id)からユーザー検証する
 
 # Dataflow
 
