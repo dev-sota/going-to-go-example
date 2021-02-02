@@ -21,15 +21,11 @@
 - ビジネスロジックであり、データアクセスを必要としないため、Usecaseに実装。
 - Usecase外部から呼び出されることはないため、privateな関数として実装し、Addメソッドから呼び出す。
 
-**`jwt_issuer` (`src/user/usecase.go`)**
-
-- 認証したユーザー情報からトークンを作成する。
-
 # Dataflow
 
 - リクエストされたEメールアドレスから登録されているユーザーを探す。
 - 登録されているパスワードを`password_decoder`に渡し、復号化。
 - リクエストされたパスワードと一致しているか確認。
-- JWTを発行して、レスポンスとして返す。
+- `github.com/go-chi/jwtauth`を使用し、JWTを発行して、レスポンスとして返す。
 
 see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
