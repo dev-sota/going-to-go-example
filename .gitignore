@@ -19,6 +19,7 @@
 server
 !.env.default
 !.env.docker
+!.env.docker.migrate
 !.env/
 
 .scripts/

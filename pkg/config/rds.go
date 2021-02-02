@@ -7,18 +7,12 @@ import (
 var RDS rds
 
 type rds struct {
-	Driver   string `env:"DB_DRIVER" envDefault:"mysql"`
-	User     string `env:"DB_USERNAME" envDefault:"root"`
-	Password string `env:"DB_PASSWORD"`
-	Database string `env:"DB_NAME" envDefault:"sample"`
-	Host     string `env:"DB_HOST" envDefault:"localhost"`
-	Port     string `env:"DB_PORT" envDefault:"3306"`
-	// Driver      string        `env:"DB_DRIVER"`
-	// User        string        `env:"DB_USERNAME"`
-	// Password    string        `env:"DB_PASSWORD"`
-	// Database    string        `env:"DB_NAME"`
-	// Host        string        `env:"DB_HOST"`
-	// Port        string        `env:"DB_PORT"`
+	Driver      string        `env:"DB_DRIVER"`
+	User        string        `env:"DB_USERNAME"`
+	Password    string        `env:"DB_PASSWORD"`
+	Database    string        `env:"DB_NAME"`
+	Host        string        `env:"DB_HOST"`
+	Port        string        `env:"DB_PORT"`
 	MaxIdle     int           `env:"DB_MAX_IDLE_CONNS"`
 	MaxOpen     int           `env:"DB_MAX_OPEN_CONNS"`
 	MaxLifetime time.Duration `env:"DB_MAX_CONN_LIFETIME"`
