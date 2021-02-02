@@ -26,32 +26,21 @@ func (repo User) Find(id int64) (model.User, apperror.Error) {
 	return user.ToModel(), nil
 }
 
-// func (repo User) Create(mu model.User) (model.User, apperror.Error) {
-// 	user := entity.NewUserFromModel(mu)
-// 	if err := repo.db.Create(&user).Error; err != nil {
-// 		return model.User{}, newGormError(
-// 			err, "error inserting user in database",
-// 		)
-// 	}
-// 	return user.ToModel(), nil
-// }
-
-func (repo User) Create(mu model.User) (model.User, apperror.Error) {
-	user := entity.NewUserFromModel(mu)
-
+func (repo User) Create(mu *model.User) apperror.Error {
 	f := func(tx *gorm.DB) apperror.Error {
+		user := entity.NewUserFromModel(*mu)
 		if err := tx.Create(&user).Error; err != nil {
-			return newGormError(
-				err, "error inserting user in database",
-			)
+			return newGormError(err, "error inserting user in database")
 		}
+
+		mu.ID = user.ID
 
 		return nil
 	}
 
 	if aerr := transaction.Run(repo.db, f); aerr != nil {
-		return model.User{}, aerr
+		return aerr
 	}
 
-	return user.ToModel(), nil
+	return nil
 }

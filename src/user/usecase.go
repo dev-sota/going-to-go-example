@@ -26,11 +26,15 @@ func (u Usecase) FindUser(inp FindUserInput) (out FindUserOutput, aerr apperror.
 }
 
 func (u Usecase) AddUser(inp AddUserInput) (out AddUserOutput, aerr apperror.Error) {
-	user, aerr := u.user.Create(inp.User)
+	aerr = u.user.Create(&inp.User)
 	if aerr != nil {
 		return
 	}
 
+	user, aerr := u.user.Find(inp.User.ID)
+	if aerr != nil {
+		return
+	}
 	out.User = user
 
 	return out, nil
