@@ -18,7 +18,7 @@ User作成時にパスワードを暗号化して保存する。
 - 登録されていた場合は、エラーレスポンスを返す。
 - データアクセスを必要とし、ログイン時にも流用できるため、repositoryとして実装。
 
-**`password_encryption` (`src/user/usecase.go`)**
+**`password_encrypter` (`src/user/usecase.go`)**
 
 - リクエストされたパスワードをbcryptを用いてハッシュ化する。
 - ビジネスロジックであり、データアクセスを必要としないため、Usecaseに実装。
@@ -27,7 +27,7 @@ User作成時にパスワードを暗号化して保存する。
 # Dataflow
 
 - リクエストされたEメールアドレスが事前に登録されていないか確認する
-- リクエストされたパスワードを`password_encryption`に渡し、暗号化。
+- リクエストされたパスワードを`password_encrypter`に渡し、暗号化。
 - `Create`のメソッドを利用し、Userを作成。
 
 see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
