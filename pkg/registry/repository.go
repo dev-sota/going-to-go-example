@@ -29,3 +29,7 @@ func NewRepository() (Repository, func() error) {
 func (repo Repository) NewInvitation() dao.Invitation {
 	return dao.NewInvitation(repo.db)
 }
+
+func (repo Repository) NewUser() dao.User {
+	return dao.NewUser(repo.db)
+}
