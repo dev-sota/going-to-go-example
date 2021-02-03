@@ -26,6 +26,17 @@ func (repo User) Find(id int64) (model.User, apperror.Error) {
 	return user.ToModel(), nil
 }
 
+func (repo User) FindByEmail(email string) (model.User, apperror.Error) {
+	var user entity.User
+	if err := repo.db.Where("email = ?", email).First(&user).Error; err != nil {
+		return model.User{}, newGormError(
+			err, "error searching user in database",
+		)
+	}
+
+	return user.ToModel(), nil
+}
+
 func (repo User) Create(mu *model.User) apperror.Error {
 	f := func(tx *gorm.DB) apperror.Error {
 		user := entity.NewUserFromModel(*mu)
