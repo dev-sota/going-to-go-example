@@ -1,8 +1,11 @@
 package user
 
 import (
+	"fmt"
+
 	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/repository"
+	"github.com/ispec-inc/going-to-go-example/pkg/password"
 	"github.com/ispec-inc/going-to-go-example/pkg/registry"
 )
 
@@ -26,6 +29,17 @@ func (u Usecase) Find(inp FindInput) (out FindOutput, aerr apperror.Error) {
 }
 
 func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
+	_, aerr = u.user.FindByEmail(inp.User.Email)
+	if aerr == nil {
+		aerr = apperror.New(apperror.CodeInvalid, fmt.Errorf("Email address already exists"))
+		return
+	}
+
+	aerr = password.Encrypt(&inp.User.Password)
+	if aerr != nil {
+		return
+	}
+
 	aerr = u.user.Create(&inp.User)
 	if aerr != nil {
 		return

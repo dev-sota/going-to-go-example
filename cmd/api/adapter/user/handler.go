@@ -59,8 +59,10 @@ func (h handler) Add(w http.ResponseWriter, r *http.Request) {
 	}
 
 	usr := model.User{
-		Name: request.Name,
-		Age:  request.Age,
+		Email:    request.Email,
+		Password: request.Password,
+		Name:     request.Name,
+		Age:      request.Age,
 	}
 	inp := user.AddInput{
 		User: usr,
