@@ -53,3 +53,19 @@ func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
 
 	return out, nil
 }
+
+func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
+	user, aerr := u.user.FindByEmail(inp.User.Email)
+	if aerr != nil {
+		return
+	}
+
+	aerr = password.Authorize(user.Password, inp.User.Password)
+	if aerr != nil {
+		return
+	}
+
+	out.Token = "dummy-output-token"
+
+	return out, nil
+}

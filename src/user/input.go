@@ -9,3 +9,7 @@ type FindInput struct {
 type AddInput struct {
 	User model.User
 }
+
+type LoginInput struct {
+	User model.User
+}

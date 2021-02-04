@@ -11,3 +11,7 @@ type FindOutput struct {
 type AddOutput struct {
 	User model.User
 }
+
+type LoginOutput struct {
+	Token string
+}

@@ -10,5 +10,6 @@ func NewRouter(handler handler) http.Handler {
 	r := chi.NewRouter()
 	r.Get("/{id}", handler.Get)
 	r.Post("/", handler.Add)
+	r.Post("/login", handler.Login)
 	return r
 }
