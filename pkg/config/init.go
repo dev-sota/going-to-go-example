@@ -13,4 +13,7 @@ func Init() {
 	if err := env.Parse(&RDS); err != nil {
 		fmt.Printf("%+v\n", err)
 	}
+	if err := env.Parse(&JWT); err != nil {
+		fmt.Printf("%+v\n", err)
+	}
 }

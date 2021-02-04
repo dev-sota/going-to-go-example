@@ -7,6 +7,7 @@ import (
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/repository"
 	"github.com/ispec-inc/going-to-go-example/pkg/password"
 	"github.com/ispec-inc/going-to-go-example/pkg/registry"
+	"github.com/ispec-inc/going-to-go-example/pkg/value"
 )
 
 type Usecase struct {
@@ -65,7 +66,10 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 		return
 	}
 
-	out.Token = "dummy-output-token"
+	out.Token, aerr = value.NewToken(user.ID)
+	if aerr != nil {
+		return
+	}
 
 	return out, nil
 }

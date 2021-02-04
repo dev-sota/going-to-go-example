@@ -25,11 +25,13 @@ require (
 	github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548 // indirect
 	github.com/cznic/strutil v0.0.0-20181122101858-275e90344537 // indirect
 	github.com/cznic/xc v0.0.0-20181122101856-45b06973881e // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/disintegration/gift v1.2.1 // indirect
 	github.com/edsrzf/mmap-go v1.0.0 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/garyburd/redigo v1.6.2 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/go-chi/jwtauth v4.0.4+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-testfixtures/testfixtures/v3 v3.3.0 // indirect
