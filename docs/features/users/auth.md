@@ -4,8 +4,10 @@
 # Objective
 トークンの検証
 
-- Authorizationヘッダーからトークンを取得する
-- トークンをmiddleware検証してユーザーを識別する
+- トークン検証
+    - 署名検証
+    - 有効期限検証
+    - ユーザー検証
 - ログイン制約 (非ログインユーザの場合エラーを出す)
 
 を提供する。
@@ -15,16 +17,18 @@
 **`cmd/api/server/middleware/auth.go`**
 
 - Authorizationヘッダーからトークンを取得する
-- 取得したトークンを"github.com/go-chi/jwtauth" を用いて検証
+- トークンの署名を検証（復号化）する
+- claimからexpを取得し、検証する
+- claimからuser_idをを取得し、Verifyからuser_idを識別する
 
 **`Verify` (`src/user/usecase.go`)**
-- トークン情報(user_id)からユーザー検証する
+- user_idからユーザーを検証する
 
 # Dataflow
 
-- ヘッダーからトークンを取得してコンテキストに追加する
-- middlewareにてトークンを検証する
-- middlewareから`Verify`を呼び出して、トークン情報(user_id)からユーザー検証する
+- Authorizationヘッダーからトークンを取得する
+- auth.goにてトークンを検証する
+- auth.goから`Verify`を呼び出して、user_idからユーザー検証する
 
 see also [middleware](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
 see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
