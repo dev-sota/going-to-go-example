@@ -105,6 +105,9 @@ func (h handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := out.Token
+	res := LoginResponse{
+		Token: out.Token,
+	}
+
 	presenter.Response(w, res)
 }

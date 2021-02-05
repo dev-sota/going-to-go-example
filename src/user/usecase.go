@@ -66,10 +66,11 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 		return
 	}
 
-	out.Token, aerr = value.NewToken(user.ID)
+	tkn, aerr := value.NewToken(user.ID)
 	if aerr != nil {
 		return
 	}
+	out.Token = tkn
 
 	return out, nil
 }
