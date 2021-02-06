@@ -14,21 +14,21 @@
 
 # Module
 
-**`cmd/api/server/middleware/auth.go`**
+**`VerifyToken` (`cmd/api/server/middleware/auth.go`)**
 
 - Authorizationヘッダーからトークンを取得する
 - トークンの署名を検証（復号化）する
 - claimからexpを取得し、検証する
-- claimからuser_idをを取得し、Verifyからuser_idを識別する
+- claimからuser_idをを取得し、`Verify`からuser_idを検証する
 
-**`Verify` (`src/user/usecase.go`)**
+**`user.Verify` (`src/user/usecase.go`)**
 - user_idからユーザーを検証する
 
 # Dataflow
 
 - Authorizationヘッダーからトークンを取得する
-- auth.goにてトークンを検証する
-- auth.goから`Verify`を呼び出して、user_idからユーザー検証する
+- `VerifyToken`にてトークンを検証する
+- `VerifyToken`から`user.Verify`を呼び出して、user_idからユーザー検証する
 
 see also [middleware](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
 see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
