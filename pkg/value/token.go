@@ -10,16 +10,16 @@ import (
 
 type Token string
 
-func NewToken(user_id int64) (Token, apperror.Error) {
+func NewToken(userId int64) (Token, apperror.Error) {
 	claims := jwt.MapClaims{}
-	claims["user_id"] = user_id
+	claims["uid"] = userId
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(time.Minute * time.Duration(config.JWT.ExpireMin)).Unix()
 
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedString, err := tkn.SignedString([]byte(config.JWT.Secret))
+	tokenString, err := tkn.SignedString([]byte(config.JWT.Secret))
 	if err != nil {
 		return "", apperror.New(apperror.CodeError, err)
 	}
-	return Token(signedString), nil
+	return Token(tokenString), nil
 }
