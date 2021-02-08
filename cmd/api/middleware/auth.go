@@ -66,16 +66,19 @@ func getTokenString(tkn string) (string, error) {
 }
 
 func verifySignature(str string) (*value.Claims, error) {
-	tkn, _ := jwt.ParseWithClaims(str, &value.Claims{}, func(tkn *jwt.Token) (interface{}, error) {
+	tkn, err := jwt.ParseWithClaims(str, &value.Claims{}, func(tkn *jwt.Token) (interface{}, error) {
 		if _, ok := tkn.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", tkn.Header["alg"])
+			return nil, fmt.Errorf("Unexpected signing method: %v", tkn.Header["alg"])
 		}
 		return []byte(config.JWT.Secret), nil
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	claims, ok := tkn.Claims.(*value.Claims)
 	if !(ok && tkn.Valid) {
-		return &value.Claims{}, fmt.Errorf("unexpected signing method:")
+		return nil, fmt.Errorf("Invalid Claims")
 	}
 
 	return claims, nil
