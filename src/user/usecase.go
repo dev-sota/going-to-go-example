@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
+	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/repository"
 	"github.com/ispec-inc/going-to-go-example/pkg/password"
 	"github.com/ispec-inc/going-to-go-example/pkg/registry"
@@ -30,8 +31,8 @@ func (u Usecase) Find(inp FindInput) (out FindOutput, aerr apperror.Error) {
 }
 
 func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
-	_, aerr = u.user.FindByEmail(inp.User.Email)
-	if aerr == nil {
+	res, _ := u.user.FindByEmail(inp.User.Email)
+	if (res != model.User{}) {
 		aerr = apperror.New(apperror.CodeInvalid, fmt.Errorf("Email address already exists"))
 		return
 	}
