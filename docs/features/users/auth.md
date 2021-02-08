@@ -19,16 +19,12 @@
 - Authorizationヘッダーからトークンを取得する
 - トークンの署名を検証（復号化）する
 - claimからexpを取得し、検証する
-- claimからuidを取得し、`Verify`からユーザーを検証する
-
-**`user.Verify` (`src/user/usecase.go`)**
-- uidからユーザーを検証する
+- claimからuidを取得し、`user.Find` (`src/user/usecase.go`)からユーザーを検証する
 
 # Dataflow
 
 - Authorizationヘッダーからトークンを取得する
 - `VerifyToken`にてトークンを検証する
-- `VerifyToken`から`user.Verify`を呼び出して、uidからユーザーを検証する
+- `VerifyToken`から`user.Find`を呼び出して、uidからユーザーを検証する
 
 see also [middleware](https://github.com/dev-sota/going-to-go-example/tree/main/cmd/api/middleware/auth.go)
-see also [usecase](https://github.com/dev-sota/going-to-go-example/tree/main/src/user)
