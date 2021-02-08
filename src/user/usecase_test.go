@@ -22,9 +22,11 @@ func TestUserUsecase_Find(t *testing.T) {
 			},
 			out: FindOutput{
 				User: model.User{
-					ID:   int64(1),
-					Name: "dev-sota",
-					Age:  int(25),
+					ID:       int64(1),
+					Email:    "test@example.com",
+					Password: "hashed_password",
+					Name:     "test-user",
+					Age:      int(25),
 				},
 			},
 			errCode: apperror.CodeNoError,
@@ -43,8 +45,9 @@ func TestUserUsecase_Find(t *testing.T) {
 			t.Parallel()
 
 			ctrl := gomock.NewController(t)
-			um := mock.NewMockUser(ctrl)
+			defer ctrl.Finish()
 
+			um := mock.NewMockUser(ctrl)
 			aerr := apperror.NewTestError(c.errCode)
 			um.EXPECT().Find(c.inp.ID).Return(c.out.User, aerr)
 
@@ -53,8 +56,6 @@ func TestUserUsecase_Find(t *testing.T) {
 
 			assert.Equal(t, c.out, out)
 			apperror.AssertError(t, c.errCode, aerr)
-
-			ctrl.Finish()
 		})
 	}
 }
