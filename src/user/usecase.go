@@ -36,8 +36,9 @@ func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
 		return
 	}
 
-	aerr = password.Encrypt(&inp.User.Password)
-	if aerr != nil {
+	err := password.Encrypt(&inp.User.Password)
+	if err != nil {
+		aerr = apperror.New(apperror.CodeError, err)
 		return
 	}
 
@@ -61,8 +62,9 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 		return
 	}
 
-	aerr = password.Authorize(user.Password, inp.User.Password)
-	if aerr != nil {
+	err := password.Authorize(user.Password, inp.User.Password)
+	if err != nil {
+		aerr = apperror.New(apperror.CodeError, err)
 		return
 	}
 

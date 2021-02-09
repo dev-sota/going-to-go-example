@@ -1,23 +1,19 @@
 package password
 
 import (
-	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Encrypt(password *string) apperror.Error {
+func Encrypt(password *string) (err error) {
 	res, err := bcrypt.GenerateFromPassword([]byte(*password), 10)
 	if err != nil {
-		return apperror.New(apperror.CodeError, err)
+		return
 	}
 	*password = string(res)
-	return nil
+	return
 }
 
-func Authorize(hashedPassword string, password string) apperror.Error {
-	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-	if err != nil {
-		return apperror.New(apperror.CodeError, err)
-	}
-	return nil
+func Authorize(hashedPassword string, password string) (err error) {
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return
 }
