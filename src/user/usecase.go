@@ -57,12 +57,12 @@ func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
 }
 
 func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
-	user, aerr := u.user.FindByEmail(inp.User.Email)
+	user, aerr := u.user.FindByEmail(inp.Email)
 	if aerr != nil {
 		return
 	}
 
-	err := password.Authorize(user.Password, inp.User.Password)
+	err := password.Authorize(user.Password, inp.Password)
 	if err != nil {
 		aerr = apperror.New(apperror.CodeError, err)
 		return

@@ -92,12 +92,9 @@ func (h handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	usr := model.User{
+	inp := user.LoginInput{
 		Email:    request.Email,
 		Password: request.Password,
-	}
-	inp := user.LoginInput{
-		User: usr,
 	}
 	out, aerr := h.usecase.Login(inp)
 	if aerr != nil {

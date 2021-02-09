@@ -11,5 +11,6 @@ type AddInput struct {
 }
 
 type LoginInput struct {
-	User model.User
+	Email    string
+	Password string
 }
