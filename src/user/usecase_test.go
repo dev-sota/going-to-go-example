@@ -86,18 +86,6 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 			},
 			errCode: apperror.CodeNoError,
 		},
-		"internal error": {
-			inp: AddInput{
-				User: model.User{
-					Email:    "test@example.com",
-					Password: "raw_password",
-					Name:     "test-user",
-					Age:      int(25),
-				},
-			},
-			out:     AddOutput{},
-			errCode: apperror.CodeError,
-		},
 	}
 
 	for name, c := range cases {
@@ -109,9 +97,10 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 
 			um := mock.NewMockUser(ctrl)
 			aerr := apperror.NewTestError(c.errCode)
-			um.EXPECT().FindByEmail(c.inp.User.Email).Return(model.User{}, aerr)
+			exerr := apperror.NewTestError(apperror.CodeNotFound)
+			um.EXPECT().FindByEmail(c.inp.User.Email).Return(model.User{}, exerr)
 			um.EXPECT().Create(&c.inp.User).Return(aerr)
-			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr).AnyTimes()
+			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr)
 
 			u := Usecase{user: um}
 			out, aerr := u.Add(c.inp)

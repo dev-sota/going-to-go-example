@@ -9,10 +9,11 @@ import (
 )
 
 func newGormError(err error, msg string) apperror.Error {
-	switch err {
-	case gorm.ErrRecordNotFound:
-		return apperror.New(apperror.CodeNotFound, fmt.Errorf("%s: %s", msg, err.Error()))
+	errstr := err.Error()
+	switch errstr {
+	case gorm.ErrRecordNotFound.Error():
+		return apperror.New(apperror.CodeNotFound, fmt.Errorf("%s: %s", msg, errstr))
 	default:
-		return apperror.New(apperror.CodeError, fmt.Errorf("%s: %s", msg, err.Error()))
+		return apperror.New(apperror.CodeError, fmt.Errorf("%s: %s", msg, errstr))
 	}
 }
