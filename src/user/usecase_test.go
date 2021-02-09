@@ -62,9 +62,10 @@ func TestUserUsecase_Find(t *testing.T) {
 
 func TestUserUsecase_Add_Success(t *testing.T) {
 	cases := map[string]struct {
-		inp     AddInput
-		out     AddOutput
-		errCode apperror.Code
+		inp             AddInput
+		out             AddOutput
+		errCode         apperror.Code
+		expectedErrCode apperror.Code
 	}{
 		"success": {
 			inp: AddInput{
@@ -84,7 +85,8 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 					Age:      int(25),
 				},
 			},
-			errCode: apperror.CodeNoError,
+			errCode:         apperror.CodeNoError,
+			expectedErrCode: apperror.CodeNotFound,
 		},
 	}
 
@@ -97,9 +99,9 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 
 			um := mock.NewMockUser(ctrl)
 			aerr := apperror.NewTestError(c.errCode)
-			exerr := apperror.NewTestError(apperror.CodeNotFound)
+			exerr := apperror.NewTestError(c.expectedErrCode)
 			um.EXPECT().FindByEmail(c.inp.User.Email).Return(model.User{}, exerr)
-			um.EXPECT().Create(&c.inp.User).Return(aerr)
+			um.EXPECT().Create(gomock.Any()).Return(aerr)
 			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr)
 
 			u := Usecase{user: um}
