@@ -69,8 +69,9 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 	}
 
 	claims := value.NewClaims(user.ID)
-	tkn, aerr := value.NewToken(claims)
-	if aerr != nil {
+	tkn, err := value.NewToken(claims)
+	if err != nil {
+		aerr = apperror.New(apperror.CodeError, err)
 		return
 	}
 	out.Token = tkn
