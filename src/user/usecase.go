@@ -36,11 +36,12 @@ func (u Usecase) Add(inp AddInput) (out AddOutput, aerr apperror.Error) {
 		return
 	}
 
-	err := password.Encrypt(&inp.User.Password)
+	pwd, err := password.Encrypt(inp.User.Password)
 	if err != nil {
 		aerr = apperror.New(apperror.CodeError, err)
 		return
 	}
+	inp.User.Password = pwd
 
 	aerr = u.user.Create(&inp.User)
 	if aerr != nil {
@@ -62,9 +63,9 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 		return
 	}
 
-	err := password.Authorize(user.Password, inp.Password)
-	if err != nil {
-		aerr = apperror.New(apperror.CodeError, err)
+	ok := password.Compare(user.Password, inp.Password)
+	if !ok {
+		aerr = apperror.New(apperror.CodeInvalid, fmt.Errorf("Incorrect password"))
 		return
 	}
 
