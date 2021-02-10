@@ -7,6 +7,7 @@ import (
 	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/mock"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
+	"github.com/ispec-inc/going-to-go-example/pkg/password"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -112,6 +113,59 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 			out, aerr := u.Add(c.inp)
 
 			assert.Equal(t, c.out, out)
+			apperror.AssertError(t, c.errCode, aerr)
+		})
+	}
+}
+
+func TestUserUsecase_Login_Success(t *testing.T) {
+	raw_password := "raw_password"
+	hashed_password, err := password.Encrypt(raw_password)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cases := map[string]struct {
+		inp     LoginInput
+		res     FindOutput
+		out     LoginOutput
+		errCode apperror.Code
+	}{
+		"success": {
+			inp: LoginInput{
+				Email:    "test@example.com",
+				Password: raw_password,
+			},
+			res: FindOutput{
+				User: model.User{
+					ID:       int64(1),
+					Email:    "test@example.com",
+					Password: hashed_password,
+					Name:     "test-user",
+					Age:      int(25),
+				},
+			},
+			out: LoginOutput{
+				Token: "token_string",
+			},
+			errCode: apperror.CodeNoError,
+		},
+	}
+
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			um := mock.NewMockUser(ctrl)
+			aerr := apperror.NewTestError(c.errCode)
+			um.EXPECT().FindByEmail(c.inp.Email).Return(c.res.User, aerr)
+
+			u := Usecase{user: um}
+			_, aerr = u.Login(c.inp)
+
 			apperror.AssertError(t, c.errCode, aerr)
 		})
 	}
