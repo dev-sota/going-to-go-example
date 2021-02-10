@@ -128,7 +128,6 @@ func TestUserUsecase_Login_Success(t *testing.T) {
 	cases := map[string]struct {
 		inp     LoginInput
 		res     FindOutput
-		out     LoginOutput
 		errCode apperror.Code
 	}{
 		"success": {
@@ -144,9 +143,6 @@ func TestUserUsecase_Login_Success(t *testing.T) {
 					Name:     "test-user",
 					Age:      int(25),
 				},
-			},
-			out: LoginOutput{
-				Token: "token_string",
 			},
 			errCode: apperror.CodeNoError,
 		},
