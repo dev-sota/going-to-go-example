@@ -102,11 +102,7 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 			aerr := apperror.NewTestError(c.errCode)
 			exerr := apperror.NewTestError(c.expectedErrCode)
 			um.EXPECT().FindByEmail(c.inp.User.Email).Return(model.User{}, exerr)
-			um.EXPECT().Create(gomock.Any()).Return(aerr).Do(func(usr *model.User) {
-				assert.Equal(t, c.inp.User.Email, usr.Email)
-				assert.Equal(t, c.inp.User.Name, usr.Name)
-				assert.Equal(t, c.inp.User.Age, usr.Age)
-			})
+			um.EXPECT().Create(gomock.Any()).SetArg(0, c.inp.User).Return(aerr)
 			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr)
 
 			u := Usecase{user: um}
