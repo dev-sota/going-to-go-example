@@ -51,7 +51,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/iancoleman/strcase v0.1.2 // indirect
 	github.com/inconshreveable/log15 v0.0.0-20200109203555-b30bc20e4fd1 // indirect
-	github.com/jinzhu/gorm v1.9.14
+	github.com/jinzhu/gorm v1.9.14 // indirect
 	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/kisielk/sqlstruct v0.0.0-20150923205031-648daed35d49 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
