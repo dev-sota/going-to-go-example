@@ -1,6 +1,8 @@
 -- migrate:up
 create table users(
   id bigint not null primary key auto_increment,
+  email varchar(255) not null unique,
+  password varchar(255) not null,
   name varchar(255),
   age int,
   created_at datetime,

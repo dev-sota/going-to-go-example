@@ -59,8 +59,10 @@ func (h handler) Add(w http.ResponseWriter, r *http.Request) {
 	}
 
 	usr := model.User{
-		Name: request.Name,
-		Age:  request.Age,
+		Email:    request.Email,
+		Password: request.Password,
+		Name:     request.Name,
+		Age:      request.Age,
 	}
 	inp := user.AddInput{
 		User: usr,
@@ -75,5 +77,34 @@ func (h handler) Add(w http.ResponseWriter, r *http.Request) {
 	res := Response{
 		User: usrres,
 	}
+	presenter.Response(w, res)
+}
+
+func (h handler) Login(w http.ResponseWriter, r *http.Request) {
+	var request loginRequest
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		presenter.BadRequestError(w, err)
+		return
+	}
+	validate := validator.New()
+	if err := validate.Struct(request); err != nil {
+		presenter.BadRequestError(w, err)
+		return
+	}
+
+	inp := user.LoginInput{
+		Email:    request.Email,
+		Password: request.Password,
+	}
+	out, aerr := h.usecase.Login(inp)
+	if aerr != nil {
+		presenter.ApplicationException(w, aerr)
+		return
+	}
+
+	res := LoginResponse{
+		Token: out.Token,
+	}
+
 	presenter.Response(w, res)
 }

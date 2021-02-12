@@ -25,11 +25,13 @@ require (
 	github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548 // indirect
 	github.com/cznic/strutil v0.0.0-20181122101858-275e90344537 // indirect
 	github.com/cznic/xc v0.0.0-20181122101856-45b06973881e // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/disintegration/gift v1.2.1 // indirect
 	github.com/edsrzf/mmap-go v1.0.0 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/garyburd/redigo v1.6.2 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/go-chi/jwtauth v4.0.4+incompatible // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-testfixtures/testfixtures/v3 v3.3.0 // indirect
@@ -49,7 +51,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/iancoleman/strcase v0.1.2 // indirect
 	github.com/inconshreveable/log15 v0.0.0-20200109203555-b30bc20e4fd1 // indirect
-	github.com/jinzhu/gorm v1.9.14
+	github.com/jinzhu/gorm v1.9.14 // indirect
 	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/kisielk/sqlstruct v0.0.0-20150923205031-648daed35d49 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
@@ -63,6 +65,7 @@ require (
 	github.com/tanimutomo/sqlfile v1.0.0
 	go.opencensus.io v0.22.5 // indirect
 	golang.org/x/build v0.0.0-20201030074411-3b7f1150099d // indirect
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/image v0.0.0-20200927104501-e162460cd6b5 // indirect
 	golang.org/x/mobile v0.0.0-20200801112145-973feb4309de // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect

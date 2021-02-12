@@ -7,6 +7,7 @@ import (
 	"github.com/ispec-inc/going-to-go-example/pkg/apperror"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/mock"
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
+	"github.com/ispec-inc/going-to-go-example/pkg/password"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,9 +23,11 @@ func TestUserUsecase_Find(t *testing.T) {
 			},
 			out: FindOutput{
 				User: model.User{
-					ID:   int64(1),
-					Name: "dev-sota",
-					Age:  int(25),
+					ID:       int64(1),
+					Email:    "test@example.com",
+					Password: "hashed_password",
+					Name:     "test-user",
+					Age:      int(25),
 				},
 			},
 			errCode: apperror.CodeNoError,
@@ -43,8 +46,9 @@ func TestUserUsecase_Find(t *testing.T) {
 			t.Parallel()
 
 			ctrl := gomock.NewController(t)
-			um := mock.NewMockUser(ctrl)
+			defer ctrl.Finish()
 
+			um := mock.NewMockUser(ctrl)
 			aerr := apperror.NewTestError(c.errCode)
 			um.EXPECT().Find(c.inp.ID).Return(c.out.User, aerr)
 
@@ -53,43 +57,37 @@ func TestUserUsecase_Find(t *testing.T) {
 
 			assert.Equal(t, c.out, out)
 			apperror.AssertError(t, c.errCode, aerr)
-
-			ctrl.Finish()
 		})
 	}
 }
 
 func TestUserUsecase_Add_Success(t *testing.T) {
 	cases := map[string]struct {
-		inp     AddInput
-		out     AddOutput
-		errCode apperror.Code
+		inp             AddInput
+		out             AddOutput
+		errCode         apperror.Code
+		expectedErrCode apperror.Code
 	}{
 		"success": {
 			inp: AddInput{
 				User: model.User{
-					Name: "dev-sota",
-					Age:  int(25),
+					Email:    "test@example.com",
+					Password: "raw_password",
+					Name:     "test-user",
+					Age:      int(25),
 				},
 			},
 			out: AddOutput{
 				User: model.User{
-					ID:   int64(1),
-					Name: "dev-sota",
-					Age:  int(25),
+					ID:       int64(1),
+					Email:    "test@example.com",
+					Password: "hashed_password",
+					Name:     "test-user",
+					Age:      int(25),
 				},
 			},
-			errCode: apperror.CodeNoError,
-		},
-		"internal error": {
-			inp: AddInput{
-				User: model.User{
-					Name: "dev-sota",
-					Age:  int(25),
-				},
-			},
-			out:     AddOutput{},
-			errCode: apperror.CodeError,
+			errCode:         apperror.CodeNoError,
+			expectedErrCode: apperror.CodeNotFound,
 		},
 	}
 
@@ -98,19 +96,69 @@ func TestUserUsecase_Add_Success(t *testing.T) {
 			t.Parallel()
 
 			ctrl := gomock.NewController(t)
-			um := mock.NewMockUser(ctrl)
+			defer ctrl.Finish()
 
+			um := mock.NewMockUser(ctrl)
 			aerr := apperror.NewTestError(c.errCode)
-			um.EXPECT().Create(&(c.inp.User)).Return(aerr)
-			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr).AnyTimes()
+			exerr := apperror.NewTestError(c.expectedErrCode)
+			um.EXPECT().FindByEmail(c.inp.User.Email).Return(model.User{}, exerr)
+			um.EXPECT().Create(gomock.Any()).SetArg(0, c.inp.User).Return(aerr)
+			um.EXPECT().Find(c.inp.User.ID).Return(c.out.User, aerr)
 
 			u := Usecase{user: um}
 			out, aerr := u.Add(c.inp)
 
 			assert.Equal(t, c.out, out)
 			apperror.AssertError(t, c.errCode, aerr)
+		})
+	}
+}
 
-			ctrl.Finish()
+func TestUserUsecase_Login_Success(t *testing.T) {
+	raw_password := "raw_password"
+	hashed_password, err := password.Encrypt(raw_password)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cases := map[string]struct {
+		inp     LoginInput
+		res     FindOutput
+		errCode apperror.Code
+	}{
+		"success": {
+			inp: LoginInput{
+				Email:    "test@example.com",
+				Password: raw_password,
+			},
+			res: FindOutput{
+				User: model.User{
+					ID:       int64(1),
+					Email:    "test@example.com",
+					Password: hashed_password,
+					Name:     "test-user",
+					Age:      int(25),
+				},
+			},
+			errCode: apperror.CodeNoError,
+		},
+	}
+
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			um := mock.NewMockUser(ctrl)
+			aerr := apperror.NewTestError(c.errCode)
+			um.EXPECT().FindByEmail(c.inp.Email).Return(c.res.User, aerr)
+
+			u := Usecase{user: um}
+			_, aerr = u.Login(c.inp)
+
+			apperror.AssertError(t, c.errCode, aerr)
 		})
 	}
 }

@@ -1,6 +1,13 @@
 package user
 
 type addRequest struct {
-	Name string `json:"name" validate:"required"`
-	Age  int    `json:"age" validate:"required"`
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
+	Name     string `json:"name" validate:"required"`
+	Age      int    `json:"age" validate:"required"`
+}
+
+type loginRequest struct {
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
