@@ -12,18 +12,16 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 .env
 .env.*
-server
 !.env.default
 !.env.docker
 !.env.docker.migrate
 !.env/
 
 .scripts/
-vendor
 
 # OS X
 .DS_Store
