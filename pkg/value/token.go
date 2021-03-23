@@ -15,3 +15,7 @@ func NewToken(claims Claims) (Token, error) {
 	}
 	return Token(tokenString), nil
 }
+
+func (t Token) String() string {
+	return string(t)
+}

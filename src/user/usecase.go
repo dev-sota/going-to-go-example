@@ -75,7 +75,7 @@ func (u Usecase) Login(inp LoginInput) (out LoginOutput, aerr apperror.Error) {
 		aerr = apperror.New(apperror.CodeError, err)
 		return
 	}
-	out.Token = tkn
+	out.Token = tkn.String()
 
 	return out, nil
 }

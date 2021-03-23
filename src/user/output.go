@@ -2,7 +2,6 @@ package user
 
 import (
 	"github.com/ispec-inc/going-to-go-example/pkg/domain/model"
-	"github.com/ispec-inc/going-to-go-example/pkg/value"
 )
 
 type FindOutput struct {
@@ -14,5 +13,5 @@ type AddOutput struct {
 }
 
 type LoginOutput struct {
-	Token value.Token
+	Token string
 }

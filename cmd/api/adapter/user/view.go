@@ -1,7 +1,6 @@
 package user
 
 import (
-	"github.com/ispec-inc/going-to-go-example/pkg/value"
 	"github.com/ispec-inc/going-to-go-example/pkg/view"
 )
 
@@ -10,5 +9,5 @@ type Response struct {
 }
 
 type LoginResponse struct {
-	Token value.Token `json:"token"`
+	Token string `json:"token"`
 }
